@@ -1,0 +1,162 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:hvidvin@localhost:5432/drdyri"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Gender {
+  FEMALE
+  MALE
+  OTHER
+}
+
+model User {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  name      String
+  pets      Pet[]
+}
+
+model Pet {
+  id           String    @id @default(cuid())
+  serialnumber String    @unique
+  name         String
+  gender       Gender
+  isAlive      Boolean
+  createdAt    DateTime  @default(now())
+  color        String?
+  birtday      DateTime?
+  image        String?
+
+  breedId Int
+  breed   Breed @relation(fields: [breedId], references: [id])
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  vaccinations Vaccination[]
+  dewormings   Deworming[]
+  surgeries    Surgery[]
+  medicines    Medicine[]
+  medicalFoods MedicalFood[]
+}
+
+model Breed {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  speciesId Int
+  species   Species @relation(fields: [speciesId], references: [id])
+
+  pets Pet[]
+}
+
+model Species {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  breeds       Breed[]
+  medicalFoods MedicalFood[]
+}
+
+model Vaccination {
+  id   Int      @id @default(autoincrement())
+  date DateTime
+
+  hospitalId Int
+  hospital   Hospital @relation(fields: [hospitalId], references: [id])
+
+  petId String
+  pet   Pet    @relation(fields: [petId], references: [id])
+}
+
+model Deworming {
+  id   Int      @id @default(autoincrement())
+  date DateTime
+
+  hospitalId Int
+  hospital   Hospital @relation(fields: [hospitalId], references: [id])
+
+  petId String
+  pet   Pet    @relation(fields: [petId], references: [id])
+}
+
+model Surgery {
+  id          Int      @id @default(autoincrement())
+  date        DateTime
+  description String
+
+  hospitalId Int
+  hospital   Hospital @relation(fields: [hospitalId], references: [id])
+
+  surgeryTypeId Int
+  surgeryType   SurgeryType @relation(fields: [surgeryTypeId], references: [id])
+
+  petId String
+  pet   Pet    @relation(fields: [petId], references: [id])
+}
+
+model SurgeryType {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  surgeries Surgery[]
+}
+
+model MedicalFood {
+  id Int @id @default(autoincrement())
+
+  speciesId Int
+  species   Species @relation(fields: [speciesId], references: [id])
+
+  // typeId Int
+  // type   MedicalFoodType @relation(fields: [typeId], references: [id])
+
+  companyId Int
+  company   Company @relation(fields: [companyId], references: [id])
+
+  petId String
+  pet   Pet    @relation(fields: [petId], references: [id])
+}
+
+// model MedicalFoodType {
+//   id           Int           @id @default(autoincrement())
+//   name         String
+//   medicalFoods MedicalFood[]
+// }
+
+model Company {
+  id           Int           @id @default(autoincrement())
+  name         String        @unique
+  medicalFoods MedicalFood[]
+}
+
+model Medicine {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  petId String
+  pet   Pet    @relation(fields: [petId], references: [id])
+}
+
+model Hospital {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+  address     String
+  city        String
+  latitude    String
+  longitude   String
+  phoneNumber String
+  postcode    String
+  website     String?
+
+  vaccinations Vaccination[]
+  surgeries    Surgery[]
+  dewormings   Deworming[]
+}
