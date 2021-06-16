@@ -63,14 +63,28 @@ const main = async () => {
     },
   })
 
-  const user = await prisma.user.create({
-    data: {
+  const userKp = await prisma.user.findFirst({
+    where: {
+      name: { equals: 'Kristjan' },
+    },
+  })
+
+  const user = await prisma.user.upsert({
+    where: {
+      id: userKp.id,
+    },
+    update: {},
+    create: {
       name: 'Kristjan',
     },
   })
 
-  const pet = prisma.pet.create({
-    data: {
+  const pet = prisma.pet.upsert({
+    where: {
+      serialnumber: '5302697609',
+    },
+    update: {},
+    create: {
       serialnumber: '5302697609',
       name: 'Snati',
       gender: 'MALE',
