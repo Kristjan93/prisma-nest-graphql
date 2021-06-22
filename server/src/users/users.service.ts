@@ -30,13 +30,20 @@ export class UsersService {
   }
 
   async create(userCreateInput: UserCreateInput): Promise<User> {
-    const user = await this.prisma.user.create({
+    return this.prisma.user.create({
       data: {
         name: userCreateInput.name,
       },
     })
+  }
 
-    return user
+  async update(userCreateInput: UserCreateInput): Promise<User> {
+    return await this.prisma.user.update({
+      where: { id: userCreateInput.id },
+      data: {
+        name: userCreateInput.name,
+      },
+    })
   }
 
   async users(): Promise<User[]> {

@@ -122,9 +122,10 @@ type Query {
 }
 
 type Mutation {
-  user(userData: UserCreateInput!): User!
+  user(userCreateData: UserCreateInput!): User!
 }
 
 input UserCreateInput {
+  id: ID
   name: String!
 }

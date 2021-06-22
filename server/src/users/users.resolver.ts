@@ -17,7 +17,11 @@ export class UsersResolver {
   }
 
   @Mutation(() => User, { name: 'user' })
-  async createUserMutation(@Args('userData') userData: UserCreateInput) {
+  async createUserMutation(@Args('userCreateData') userData: UserCreateInput) {
+    if (userData.id) {
+      return this.userService.update(userData)
+    }
+
     return this.userService.create(userData)
   }
 }

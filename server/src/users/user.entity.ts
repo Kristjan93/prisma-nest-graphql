@@ -251,6 +251,9 @@ export class MedicalFood {
 
 @InputType()
 export class UserCreateInput {
+  @Field(() => ID, { nullable: true })
+  id?: string
+
   @Field()
   name: string
 }
