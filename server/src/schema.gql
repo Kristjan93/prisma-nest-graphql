@@ -1,0 +1,130 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: ID!
+  createdAt: DateTime!
+  name: String!
+  pets: [Pet!]
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Pet {
+  id: ID!
+  serialNumber: String!
+  name: String!
+  gender: Gender!
+  isAlive: Boolean!
+  createdAt: DateTime!
+  color: String
+  birthday: DateTime
+  image: String
+  user: User
+  vaccinations: [Vaccination!]
+  dewormings: [Deworming!]
+  surgeries: [Surgery!]
+  medicines: [Medicine!]
+  medicalFoods: [MedicalFood!]
+}
+
+enum Gender {
+  FEMALE
+  MALE
+  OTHER
+}
+
+type Hospital {
+  id: Int!
+  name: String!
+  address: String!
+  city: String!
+  latitude: String!
+  longitude: String!
+  phoneNumber: String!
+  postcode: String!
+  website: String
+  vaccinations: [Vaccination!]
+  surgeries: [Surgery!]
+  dewormings: [Deworming!]
+}
+
+type Vaccination {
+  id: Int!
+  date: DateTime!
+  hospital: Hospital
+  pet: Pet
+}
+
+type Surgery {
+  id: ID!
+  date: DateTime!
+  name: String!
+  description: String
+  hospital: Hospital
+  pet: Pet
+}
+
+type Deworming {
+  id: ID!
+  date: DateTime!
+  hospital: Hospital
+  pet: Pet
+}
+
+type Medicine {
+  id: ID!
+  name: String!
+  pet: Pet
+}
+
+type Species {
+  id: ID!
+  name: String!
+  breeds: [Breed!]
+  medicalFoods: [MedicalFood!]
+}
+
+type Breed {
+  id: ID!
+  name: String!
+  species: Species
+  pets: [Pet!]
+}
+
+type Company {
+  id: ID!
+  name: String!
+  medicalFoods: [MedicalFood!]
+}
+
+type MedicalFoodType {
+  id: ID!
+  name: String!
+  medicalFoods: [MedicalFood!]
+}
+
+type MedicalFood {
+  id: ID!
+  species: Species
+  type: MedicalFoodType
+  company: Company
+  pet: Pet
+}
+
+type Query {
+  users: [User!]!
+  user(id: String!): User!
+}
+
+type Mutation {
+  user(userData: UserCreateInput!): User!
+}
+
+input UserCreateInput {
+  name: String!
+}

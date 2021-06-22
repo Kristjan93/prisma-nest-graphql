@@ -25,13 +25,13 @@ model User {
 
 model Pet {
   id           String    @id @default(cuid())
-  serialnumber String    @unique
+  serialNumber String    @unique
   name         String
   gender       Gender
-  isAlive      Boolean
+  isAlive      Boolean   @default(true)
   createdAt    DateTime  @default(now())
   color        String?
-  birtday      DateTime?
+  birthday     DateTime?
   image        String?
 
   breedId Int
@@ -90,23 +90,14 @@ model Deworming {
 model Surgery {
   id          Int      @id @default(autoincrement())
   date        DateTime
-  description String
+  name        String
+  description String?
 
   hospitalId Int
   hospital   Hospital @relation(fields: [hospitalId], references: [id])
 
-  surgeryTypeId Int
-  surgeryType   SurgeryType @relation(fields: [surgeryTypeId], references: [id])
-
   petId String
   pet   Pet    @relation(fields: [petId], references: [id])
-}
-
-model SurgeryType {
-  id   Int    @id @default(autoincrement())
-  name String
-
-  surgeries Surgery[]
 }
 
 model MedicalFood {
@@ -115,8 +106,8 @@ model MedicalFood {
   speciesId Int
   species   Species @relation(fields: [speciesId], references: [id])
 
-  // typeId Int
-  // type   MedicalFoodType @relation(fields: [typeId], references: [id])
+  typeId Int
+  type   MedicalFoodType @relation(fields: [typeId], references: [id])
 
   companyId Int
   company   Company @relation(fields: [companyId], references: [id])
@@ -125,11 +116,11 @@ model MedicalFood {
   pet   Pet    @relation(fields: [petId], references: [id])
 }
 
-// model MedicalFoodType {
-//   id           Int           @id @default(autoincrement())
-//   name         String
-//   medicalFoods MedicalFood[]
-// }
+model MedicalFoodType {
+  id           Int           @id @default(autoincrement())
+  name         String
+  medicalFoods MedicalFood[]
+}
 
 model Company {
   id           Int           @id @default(autoincrement())

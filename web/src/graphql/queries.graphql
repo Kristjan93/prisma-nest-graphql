@@ -1,0 +1,39 @@
+query GetUsers {
+  users {
+    id
+    name
+    createdAt
+    pets {
+      id
+      name
+      serialNumber
+      gender
+      isAlive
+      createdAt
+      color
+      birthday
+      image
+      vaccinations {
+        id        
+      }
+      dewormings {
+        id
+      }
+      surgeries {
+        id
+        name
+        description
+      }
+      medicines {
+        id
+        name
+      }
+      medicalFoods {
+        id
+        type {
+          name
+        }
+      }
+    }
+  }
+}
